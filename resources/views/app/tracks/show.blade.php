@@ -23,6 +23,7 @@
                 <dd>
                     {!! $embed !!}
                 </dd>
+
             </dl>
         </section>
 
@@ -52,6 +53,11 @@
                         <dt>Réactions</dt>
                         <dd>{{ trans_choice('tracks.likes', $track->likes_count) }}</dd>
                     </dl>
+
+                    <dt>Catégorie</dt>
+                    <dd>
+                    <a href="{{ route('app.categories.show', ['category' => $track->category->id]) }}" class="link">{{ $track->category->name }}</a>
+                    </dd>
 
                     <form action="{{ route('app.tracks.like', ['week' => $week->uri, 'track' => $track]) }}" method="post">
                         @csrf

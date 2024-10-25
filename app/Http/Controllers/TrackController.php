@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Week;
 use App\Models\Track;
+use App\Models\Category;
 use App\Players\Player;
 use App\Rules\PlayerUrl;
 use App\Services\UserService;
@@ -12,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
 
 class TrackController extends Controller
 {
@@ -35,9 +37,12 @@ class TrackController extends Controller
      */
     public function create(UserService $user): View
     {
+        $categories = Category::all(); // Ajoutez cette ligne
+
         return view('app.tracks.create', [
             'week' => Week::current(),
             'remaining_tracks_count' => $user->remainingTracksCount(),
+            'categories' => $categories, // Ajoutez cette ligne
         ]);
     }
 
@@ -52,11 +57,12 @@ class TrackController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'artist' => ['required', 'string', 'max:255'],
             'url' => ['required', 'url', new PlayerUrl()],
+            'category_id' => ['required', 'exists:categories,id'], // Ajoutez cette ligne
         ]);
 
         DB::beginTransaction();
 
-        // Set track title, artist and url
+        // Set track title, artist, url and category
         $track = new Track($validated);
 
         // Set track's user + week
