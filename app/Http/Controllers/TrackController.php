@@ -22,6 +22,7 @@ class TrackController extends Controller
      */
     public function show(Request $request, Week $week, Track $track, Player $player): View
     {
+        $track->load('category');
         return view('app.tracks.show', [
             'week' => $week->loadCount('tracks'),
             'track' => $track->loadCount('likes'),

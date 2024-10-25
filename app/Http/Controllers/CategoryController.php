@@ -35,4 +35,15 @@ class CategoryController extends Controller
 
         return view('app.categories.index', compact('categories'));
     }
+
+    public function show(Category $category)
+    {
+        $tracks = $category->tracks()
+            ->with(['user', 'week', 'likes'])
+            ->withCount('likes')
+            ->orderByDesc('likes_count')
+            ->paginate(10);
+
+        return view('app.categories.show', compact('category', 'tracks'));
+    }
 }

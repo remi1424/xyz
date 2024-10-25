@@ -28,8 +28,7 @@ class Track extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)
-                    ->withDefault();
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -69,7 +68,10 @@ class Track extends Model
     }
 
     public function category()
-   {
-       return $this->belongsTo(Category::class);
-   }
+    {
+        return $this->belongsTo(Category::class)->withDefault([
+            'id' => 0,
+            'name' => 'Aucune catégorie'
+        ]);
+    }
 }
